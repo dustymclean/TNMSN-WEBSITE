@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { HUBS } from '../constants';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { HUBS, Icons } from '../constants';
 
 const HubDetail: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const hubId = searchParams.get('id');
   const hub = HUBS.find(h => h.id === hubId);
 
@@ -11,8 +12,15 @@ const HubDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white animate-in text-left">
-      <div className="bg-[#0a192f] text-white pt-32 pb-24 text-center px-4">
-        <div className="max-w-4xl mx-auto">
+      <div className="bg-[#0a192f] text-white pt-32 pb-24 text-center px-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 pointer-events-none gold-accent-pattern"></div>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="inline-flex items-center gap-2 text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.2em] mb-8 hover:text-white transition group"
+          >
+            <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Network
+          </button>
           <span className="text-[#c5a059] text-[10px] font-bold uppercase tracking-[0.4em] mb-6 block">Regional Coverage Hub</span>
           <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 italic">Mobile Notary {hub.name}, MS</h1>
           <p className="text-gray-400 text-xl font-light leading-relaxed">Secured dispatch serving the {hub.zip} corridor from our Tillatoba HQ center.</p>

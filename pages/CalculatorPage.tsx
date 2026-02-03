@@ -123,7 +123,7 @@ const CalculatorPage: React.FC = () => {
                <div className="space-y-4">
                  <label className="flex items-center gap-3 group cursor-pointer">
                    <input type="checkbox" checked={afterHours} onChange={() => setAfterHours(!afterHours)} className="w-5 h-5 accent-[#c5a059]" />
-                   <span className="text-xs font-bold text-gray-600 group-hover:text-[#0a192f] transition uppercase tracking-widest">After Hours (8PM-8AM) +$25</span>
+                   <span className="text-xs font-bold text-gray-600 group-hover:text-[#0a192f] transition uppercase tracking-widest">After Hours (6PM-8AM) +$25</span>
                  </label>
                  <label className="flex items-center gap-3 group cursor-pointer">
                    <input type="checkbox" checked={holiday} onChange={() => setHoliday(!holiday)} className="w-5 h-5 accent-[#c5a059]" />
