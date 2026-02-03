@@ -1,11 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { Icons } from '../constants';
 import { copyToClipboard, triggerSMS } from '../utils';
 
 const CalculatorPage: React.FC = () => {
-  const navigate = useNavigate();
   const [stamps, setStamps] = useState(1);
   const [pages, setPages] = useState(0);
   const [distance, setDistance] = useState(10);
@@ -55,7 +53,7 @@ const CalculatorPage: React.FC = () => {
 
   const handleLockIn = () => {
     const brief = encodeURIComponent(`Quote: $${pricing.total.toFixed(2)} (${isProTier ? 'Pro' : 'Standard'}, ${distance}mi radius, ${stamps} stamps)`);
-    navigate(`/contact?brief=${brief}`);
+    window.location.href = `contact.html?brief=${brief}`;
   };
 
   return (

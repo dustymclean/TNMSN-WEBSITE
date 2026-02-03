@@ -35,7 +35,6 @@ const ContactPage: React.FC = () => {
         setFormData({ name: '', email: '', city: 'Tillatoba', brief: '' });
       } else {
         const data = await response.json();
-        // Use hasOwnProperty instead of hasOwn to fix TS error in older target environments
         if (data && Object.prototype.hasOwnProperty.call(data, 'errors')) {
           setErrorMessage(data["errors"].map((error: any) => error["message"]).join(", "));
         } else {
@@ -81,11 +80,11 @@ const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
-                  <h4 className="font-serif text-xl font-bold text-[#0a192f] mb-4 italic">Document Review & Printing</h4>
+                  <h4 className="font-serif text-xl font-bold text-[#0a192f] mb-4 italic uppercase tracking-tighter">Document Review & Printing</h4>
                   <p className="text-gray-600 font-light leading-relaxed mb-6 text-sm">
-                    For high-stakes missions requiring industrial dual-tray printing, please email your packets or documents for review prior to dispatch.
+                    <strong>Instructions:</strong> For high-stakes missions requiring industrial dual-tray printing or complex legal review, please email your packets or documents to the address below prior to dispatch.
                   </p>
-                  <div className="flex items-center gap-3 text-[#c5a059] font-bold">
+                  <div className="flex items-center gap-3 text-[#c5a059] font-black uppercase tracking-widest text-sm bg-white p-4 rounded-xl shadow-sm border border-slate-100">
                     <Icons.FileText />
                     <a href="mailto:notary@northmsnotary.com" className="hover:underline">notary@northmsnotary.com</a>
                   </div>

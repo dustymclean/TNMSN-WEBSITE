@@ -1,23 +1,157 @@
-
 import React from 'react';
 import { Hub, Specialty } from './types';
 
 export const HUBS: Hub[] = [
-  { id: 'tillatoba', name: 'Tillatoba (HQ)', zip: '38961', highlights: ['Central Dispatch HQ', 'Radius Center Point', 'Enid Lake Proximity'] },
-  { id: 'oxford', name: 'Oxford', zip: '38655', highlights: ['Baptist Memorial Hospital', 'Oxford Square Area', 'Corporate Corridors'] },
-  { id: 'university', name: 'University', zip: '38677', highlights: ['Ole Miss Campus', 'Faculty Administrative Hubs', 'Student Services'] },
-  { id: 'grenada', name: 'Grenada', zip: '38901', highlights: ['UMMC Grenada', 'Grenada Living Center', 'Kirk Auto Group Hub'] },
-  { id: 'batesville', name: 'Batesville', zip: '38606', highlights: ['Panola Medical Center', 'Civic Center Logistics', 'I-55 Corridor'] },
-  { id: 'greenwood', name: 'Greenwood', zip: '38930', highlights: ['Greenwood Leflore Hospital', 'Leflore Courthouse', 'Delta Commercial Hub'] },
-  { id: 'winona', name: 'Winona', zip: '38967', highlights: ['Montgomery County Hub', 'Tyler Holmes Memorial', 'Crossroads Logistics'] },
-  { id: 'southaven', name: 'Southaven', zip: '38671', highlights: ['I-55 Business Logistics', 'Baptist DeSoto', 'Distribution Centers'] },
-  { id: 'hernando', name: 'Hernando', zip: '38632', highlights: ['DeSoto Courthouse', 'Legal Districts', 'County Infrastructure'] },
-  { id: 'senatobia', name: 'Senatobia', zip: '38668', highlights: ['NWCC Campus', 'Tate Courthouse', 'I-55 North Expansion'] },
-  { id: 'charleston', name: 'Charleston', zip: '38921', highlights: ['Tallahatchie Delta', 'Sumner District', 'Local Medical Clinics'] },
-  { id: 'water-valley', name: 'Water Valley', zip: '38965', highlights: ['Yalobusha General', 'Creative District', 'Main Street Logistics'] },
-  { id: 'coffeeville', name: 'Coffeeville', zip: '38922', highlights: ['Yalobusha Courthouse', 'Local Government', 'Agricultural Commerce'] },
-  { id: 'sardis', name: 'Sardis', zip: '38666', highlights: ['Panola North District', 'Lake Logistics Hub', 'Residential Growth'] },
-  { id: 'holly-springs', name: 'Holly Springs', zip: '38635', highlights: ['Marshall County Hub', 'Regional Healthcare', 'Legal Squares'] }
+  { 
+    id: 'tillatoba', 
+    name: 'Tillatoba (HQ)', 
+    zip: '38961', 
+    highlights: ['Mississippi Truck Stop (Hwy 330)', 'Central Dispatch HQ', 'Radius Center Point'] 
+  },
+  { 
+    id: 'batesville', 
+    name: 'Batesville', 
+    zip: '38606', 
+    highlights: ['Panola Medical Center', 'Eagle Crest Shopping Center', 'Panola County Courthouse', 'Hwy 6 Business Corridor'] 
+  },
+  { 
+    id: 'bruce-vardaman', 
+    name: 'Bruce / Vardaman', 
+    zip: '38915', 
+    highlights: ['Calhoun City Baptist Nursing Home', 'Sweet Potato Capital Logistics', 'Bruce Manufacturing Hub'] 
+  },
+  { 
+    id: 'charleston', 
+    name: 'Charleston', 
+    zip: '38921', 
+    highlights: ['Tallahatchie General Hospital', 'Tallahatchie Courthouse', 'Sumner Legal District', 'Charleston Square'] 
+  },
+  { 
+    id: 'clarksdale', 
+    name: 'Clarksdale', 
+    zip: '38614', 
+    highlights: ['Flowers Manor', 'Northwest MS Regional Medical', 'Coahoma County Courthouse', 'PeopleShores Delta Hub'] 
+  },
+  { 
+    id: 'cleveland', 
+    name: 'Cleveland', 
+    zip: '38732', 
+    highlights: ['Bolivar Medical Center', 'Delta State University', 'Baxter Healthcare Plant', 'Bolivar County Correctional'] 
+  },
+  { 
+    id: 'coffeeville', 
+    name: 'Coffeeville', 
+    zip: '38922', 
+    highlights: ['Yalobusha County Courthouse', 'Coffeeville Medical Clinic', 'Hwy 7 Logistics', 'Coffeeville City Hall'] 
+  },
+  { 
+    id: 'greenwood', 
+    name: 'Greenwood', 
+    zip: '38930', 
+    highlights: ['Greenwood Leflore Hospital', 'Viking Range Corporate HQ', 'Leflore County Courthouse', 'Historic Business District'] 
+  },
+  { 
+    id: 'grenada', 
+    name: 'Grenada', 
+    zip: '38901', 
+    highlights: ['UMMC Grenada Medical District', 'Grenada Living Center', 'Grenada County Courthouse', 'Kirk Auto Group Hub'] 
+  },
+  { 
+    id: 'hernando', 
+    name: 'Hernando', 
+    zip: '38632', 
+    highlights: ['DeSoto County Courthouse', 'Hernando Square Legal District', 'Commerce St Business Hub', 'Davis Family Medical'] 
+  },
+  { 
+    id: 'holly-springs', 
+    name: 'Holly Springs', 
+    zip: '38635', 
+    highlights: ['Alliance HealthCare System', 'Marshall County Courthouse', 'Rust College Campus', 'Holly Springs Square'] 
+  },
+  { 
+    id: 'marks-lambert', 
+    name: 'Marks / Lambert', 
+    zip: '38646', 
+    highlights: ['Quitman County Health & Rehab', 'Quitman County Courthouse', 'Delta Logistics Corridors'] 
+  },
+  { 
+    id: 'new-albany', 
+    name: 'New Albany', 
+    zip: '38652', 
+    highlights: ['Baptist Memorial-Union County', 'Toyota Mississippi Hub', 'Union County Health & Rehab', 'Tanglefoot Trailhead'] 
+  },
+  { 
+    id: 'olive-branch', 
+    name: 'Olive Branch', 
+    zip: '38654', 
+    highlights: ['Amazon Fulfillment Centers', 'Methodist Olive Branch Hospital', 'Goodman Rd Commercial Corridor'] 
+  },
+  { 
+    id: 'oxford', 
+    name: 'Oxford', 
+    zip: '38655', 
+    highlights: ['Baptist Memorial Hospital', 'Oxford Courthouse Square', 'Lafayette Chancery Court', 'Oxford Loop Commercial Hub'] 
+  },
+  { 
+    id: 'parchman', 
+    name: 'Parchman / Drew', 
+    zip: '38738', 
+    highlights: ['Mississippi State Penitentiary', 'Delta Correctional Facility', 'Sunflower County Justice Hub'] 
+  },
+  { 
+    id: 'pontotoc', 
+    name: 'Pontotoc', 
+    zip: '38863', 
+    highlights: ['Ashley Furniture Industries', 'Pontotoc County Courthouse', 'First Choice Medical', 'Ecru Business Hub'] 
+  },
+  { 
+    id: 'sardis', 
+    name: 'Sardis', 
+    zip: '38666', 
+    highlights: ['Sardis Lake Commercial Hub', 'Panola North District', 'Sardis City Hall', 'Main St Business Corridor'] 
+  },
+  { 
+    id: 'senatobia', 
+    name: 'Senatobia', 
+    zip: '38668', 
+    highlights: ['NWCC Campus', 'Tate County Courthouse (Historic)', 'Tate Heritage Museum', 'Main St Business District'] 
+  },
+  { 
+    id: 'southaven', 
+    name: 'Southaven', 
+    zip: '38671', 
+    highlights: ['Baptist Memorial-DeSoto', 'Goodman Road Business District', 'Tanger Outlets', 'Southaven Towne Center'] 
+  },
+  { 
+    id: 'tunica', 
+    name: 'Tunica / Robinsonville', 
+    zip: '38664', 
+    highlights: ['Gold Strike & Horseshoe Casinos', 'Tunica County Health & Rehab', 'Tunica Courthouse', 'MS River Logistics Hub'] 
+  },
+  { 
+    id: 'university', 
+    name: 'University', 
+    zip: '38677', 
+    highlights: ['Ole Miss Student Union', 'JD Williams Library', 'Faculty Admin Hubs', 'University Health Services'] 
+  },
+  { 
+    id: 'vaiden-carrollton', 
+    name: 'Vaiden / Carrollton', 
+    zip: '39176', 
+    highlights: ['Carroll County Regional Correctional', 'Vaiden Community Living Center', 'Carrollton Historic Square'] 
+  },
+  { 
+    id: 'water-valley', 
+    name: 'Water Valley', 
+    zip: '38965', 
+    highlights: ['Yalobusha General Hospital', 'Main St Creative District', 'Water Valley City Hall', 'Railroad Logistics'] 
+  },
+  { 
+    id: 'winona', 
+    name: 'Winona', 
+    zip: '38967', 
+    highlights: ['Montgomery County Courthouse', 'Tyler Holmes Memorial', 'Downtown Commercial District', 'Winona Community House'] 
+  }
 ];
 
 export const SPECIALTIES: Specialty[] = [
