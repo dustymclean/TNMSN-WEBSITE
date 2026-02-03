@@ -1,4 +1,6 @@
+
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { Icons, HUBS } from '../constants';
 
@@ -20,8 +22,8 @@ const HomePage: React.FC = () => (
             Secured mobile dispatch starting at $50. Optimized for legal, clinical, and corporate logistics starting from our Tillatoba HQ center.
           </p>
           <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-            <a href="contact.html" className="bg-[#c5a059] text-[#0a192f] px-10 py-5 rounded-lg font-black text-xl hover:scale-105 transition shadow-2xl uppercase tracking-widest text-center">Request Dispatch</a>
-            <a href="services.html" className="bg-transparent border-2 border-gray-600 px-10 py-5 rounded-lg font-bold text-xl hover:border-[#c5a059] hover:text-[#c5a059] transition uppercase tracking-widest text-center">View Rates</a>
+            <Link to="/contact" className="bg-[#c5a059] text-[#0a192f] px-10 py-5 rounded-lg font-black text-xl hover:scale-105 transition shadow-2xl uppercase tracking-widest text-center">Request Dispatch</Link>
+            <Link to="/services" className="bg-transparent border-2 border-gray-600 px-10 py-5 rounded-lg font-bold text-xl hover:border-[#c5a059] hover:text-[#c5a059] transition uppercase tracking-widest text-center">View Rates</Link>
           </div>
         </div>
         <div className="hidden lg:block relative group">
@@ -42,16 +44,16 @@ const HomePage: React.FC = () => (
         <SectionHeader title="7-County Strategic Network" subtitle="Secured travel fees are calculated based on the radius from our Tillatoba HQ center. Covering all major growth hubs in North Mississippi." />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {HUBS.slice(0, 4).map(hub => (
-            <a key={hub.id} href={`hub.html?id=${hub.id}`} className="group p-8 bg-slate-50 border border-slate-200 rounded-3xl text-left hover:border-[#c5a059] hover:shadow-2xl transition-all">
+            <Link key={hub.id} to={`/hub?id=${hub.id}`} className="group p-8 bg-slate-50 border border-slate-200 rounded-3xl text-left hover:border-[#c5a059] hover:shadow-2xl transition-all">
               <div className="text-[#c5a059] mb-6 group-hover:scale-110 transition-transform"><Icons.MapPin /></div>
               <h3 className="font-serif text-xl font-bold text-[#0a192f] mb-2">Notary {hub.name}</h3>
               <p className="text-sm text-gray-500 mb-6 font-light">Hub serving {hub.zip} and surrounding territory.</p>
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#c5a059] border-b border-[#c5a059]">View Details &rarr;</span>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="text-center mt-12">
-            <a href="area.html" className="text-[#c5a059] font-black uppercase tracking-[0.2em] text-xs border-b-2 border-[#c5a059] pb-1 hover:text-[#0a192f] hover:border-[#0a192f] transition">Explore Full 15-City Network</a>
+            <Link to="/area" className="text-[#c5a059] font-black uppercase tracking-[0.2em] text-xs border-b-2 border-[#c5a059] pb-1 hover:text-[#0a192f] hover:border-[#0a192f] transition">Explore Full 15-City Network</Link>
         </div>
       </div>
     </section>
