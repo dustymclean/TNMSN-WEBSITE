@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Icons, HUBS } from '../constants';
 import { triggerSMS } from '../utils';
 
@@ -19,6 +19,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'Contact', path: 'contact.html' },
   ];
 
+  const isActive = (path: string) => {
+    if (pathname === '/' || pathname === '/index.html') {
+      return path === 'index.html';
+    }
+    return pathname.includes(path);
+  };
+
   return (
     <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#c5a059] selection:text-[#0a192f]">
       <nav className="bg-[#0a192f] text-white shadow-xl sticky top-0 z-50 border-b border-gray-800 backdrop-blur-md bg-opacity-95">
@@ -35,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   key={link.path}
                   href={link.path}
                   className={`text-xs font-bold transition uppercase tracking-widest border-b-2 pb-1 ${
-                    pathname.includes(link.path) || (pathname === '/' && link.path === 'index.html') ? 'text-[#c5a059] border-[#c5a059]' : 'text-gray-300 border-transparent hover:text-[#c5a059]'
+                    isActive(link.path) ? 'text-[#c5a059] border-[#c5a059]' : 'text-gray-300 border-transparent hover:text-[#c5a059]'
                   }`}
                 >
                   {link.name}
@@ -60,7 +67,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <a
                 key={link.path}
                 href={link.path}
-                className="block w-full text-left py-2 text-gray-300 font-bold uppercase tracking-widest text-sm"
+                className={`block w-full text-left py-2 font-bold uppercase tracking-widest text-sm ${
+                  isActive(link.path) ? 'text-[#c5a059]' : 'text-gray-300'
+                }`}
               >
                 {link.name}
               </a>
