@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
@@ -28,7 +27,6 @@ if (rootElement) {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/hub" element={<HubDetail />} />
-            {/* Fallback to Home */}
             <Route path="*" element={<HomePage />} />
           </Routes>
         </Layout>

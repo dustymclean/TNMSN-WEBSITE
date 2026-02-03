@@ -1,9 +1,10 @@
 import React from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import { HUBS } from '../constants';
 
 const HubDetail: React.FC = () => {
-  const params = new URLSearchParams(window.location.search);
-  const hubId = params.get('id');
+  const [searchParams] = useSearchParams();
+  const hubId = searchParams.get('id');
   const hub = HUBS.find(h => h.id === hubId);
 
   if (!hub) return <div className="py-32 text-center text-[#0a192f] font-black uppercase tracking-widest">Market Hub Not Found</div>;
@@ -30,8 +31,8 @@ const HubDetail: React.FC = () => {
             ))}
           </div>
           <div className="mt-12 flex flex-wrap gap-4">
-            <a href="contact.html" className="bg-[#0a192f] text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-[#c5a059] hover:text-[#0a192f] transition shadow-lg text-center">Book Dispatch</a>
-            <a href="calculator.html" className="border-2 border-slate-200 text-[#0a192f] px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:border-[#0a192f] transition text-center">Open Calculator</a>
+            <Link to="/contact" className="bg-[#0a192f] text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs hover:bg-[#c5a059] hover:text-[#0a192f] transition shadow-lg text-center">Book Dispatch</Link>
+            <Link to="/calculator" className="border-2 border-slate-200 text-[#0a192f] px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs hover:border-[#0a192f] transition text-center">Open Calculator</Link>
           </div>
         </div>
         <div className="bg-slate-900 aspect-square rounded-[3rem] border-8 border-slate-800 shadow-2xl flex flex-col items-center justify-center p-20 text-center relative overflow-hidden">
