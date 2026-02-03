@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { SPECIALTIES, Icons } from '../constants';
 
@@ -16,7 +17,7 @@ const ServicesPage: React.FC = () => {
               </div>
               <h3 className="font-serif text-2xl font-bold text-[#0a192f] mb-4 uppercase tracking-tighter italic">{service.name}</h3>
               <p className="text-gray-500 font-light leading-relaxed mb-8">{service.description}</p>
-              <a href="contact.html" className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c5a059] border-b border-[#c5a059] pb-1">Request Service</a>
+              <Link to="/contact" className="text-[10px] font-black uppercase tracking-[0.3em] text-[#c5a059] border-b border-[#c5a059] pb-1">Request Service</Link>
             </div>
           ))}
         </div>
@@ -28,8 +29,8 @@ const ServicesPage: React.FC = () => {
               <h2 className="text-4xl font-serif font-bold mb-6 italic">Ready for Dispatch?</h2>
               <p className="text-gray-400 text-lg font-light leading-relaxed mb-8">Most North Mississippi markets can be reached within 60-90 minutes of dispatch from our Tillatoba HQ.</p>
               <div className="flex flex-wrap gap-4">
-                <a href="calculator.html" className="bg-[#c5a059] text-[#0a192f] px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs">Calculate Travel Fee</a>
-                <a href="contact.html" className="bg-transparent border border-white/20 hover:border-[#c5a059] text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition">Contact Dispatch</a>
+                <Link to="/calculator" className="bg-[#c5a059] text-[#0a192f] px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs">Calculate Travel Fee</Link>
+                <Link to="/contact" className="bg-transparent border border-white/20 hover:border-[#c5a059] text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-xs transition">Contact Dispatch</Link>
               </div>
             </div>
             <div className="flex flex-col gap-6">

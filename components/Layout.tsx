@@ -1,4 +1,6 @@
+
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Icons, HUBS } from '../constants';
 import { triggerSMS } from '../utils';
 
@@ -8,48 +10,47 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
-  // Use simple string matching for active states in MPA
-  const currentPath = window.location.pathname;
-  const isActive = (path: string) => currentPath.endsWith(path) || (path === 'index.html' && (currentPath === '/' || currentPath === ''));
+  const location = useLocation();
 
   const navLinks = [
-    { name: 'Home', path: 'index.html' },
-    { name: 'Services', path: 'services.html' },
-    { name: 'Area', path: 'area.html' },
-    { name: 'Calculator', path: 'calculator.html' },
-    { name: 'FAQ', path: 'faq.html' },
-    { name: 'Contact', path: 'contact.html' },
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services' },
+    { name: 'Area', path: '/area' },
+    { name: 'Calculator', path: '/calculator' },
+    { name: 'FAQ', path: '/faq' },
+    { name: 'Contact', path: '/contact' },
   ];
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <div className="flex flex-col min-h-screen font-sans bg-slate-50 selection:bg-[#c5a059] selection:text-[#0a192f]">
       <nav className="bg-[#0a192f] text-white shadow-xl sticky top-0 z-50 border-b border-gray-800 backdrop-blur-md bg-opacity-95">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
-            <a href="index.html" className="flex flex-col text-left group">
-              <span className="font-serif font-black text-xl md:text-2xl tracking-tighter text-[#c5a059] leading-none uppercase group-hover:text-white transition-colors">THE NORTH MS NOTARY</span>
+            <Link to="/" className="flex flex-col text-left">
+              <span className="font-serif font-black text-xl md:text-2xl tracking-tighter text-[#c5a059] leading-none uppercase">THE NORTH MS NOTARY</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-bold mt-1">MOBILE LOGISTICS UNIT</span>
-            </a>
+            </Link>
 
             <div className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.path}
-                  href={link.path}
+                  to={link.path}
                   className={`text-xs font-bold transition uppercase tracking-widest border-b-2 pb-1 ${
                     isActive(link.path) ? 'text-[#c5a059] border-[#c5a059]' : 'text-gray-300 border-transparent hover:text-[#c5a059]'
                   }`}
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
               <a href="tel:6013000702" className="bg-[#c5a059] text-[#0a192f] px-5 py-2 rounded font-black text-sm hover:scale-105 transition shadow-lg">
                 601-300-0702
               </a>
             </div>
 
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-gray-300" aria-label="Toggle Navigation">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden p-2 text-gray-300">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}></path>
               </svg>
@@ -60,15 +61,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {isMenuOpen && (
           <div className="lg:hidden bg-[#0a192f] border-t border-gray-800 p-4 space-y-4">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.path}
-                href={link.path}
+                to={link.path}
+                onClick={() => setIsMenuOpen(false)}
                 className={`block w-full text-left py-2 font-bold uppercase tracking-widest text-sm ${
                   isActive(link.path) ? 'text-[#c5a059]' : 'text-gray-300'
                 }`}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
             <a href="tel:6013000702" className="block w-full text-center bg-[#c5a059] text-[#0a192f] py-3 rounded font-black uppercase tracking-widest text-sm">Call Now</a>
           </div>
@@ -91,34 +93,34 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="col-span-1 md:col-span-2">
             <h4 className="font-serif text-2xl font-bold text-white mb-6 uppercase tracking-tight">The North Mississippi Notary</h4>
             <p className="max-w-md mb-8 leading-relaxed text-sm">
-              Secured mobile office unit specializing in high-stakes document fabrication and legal witnessing across 12+ Counties in North MS. Technologist-owned with a zero-defect mindset.
+              Secured mobile office unit specializing in high-stakes document fabrication and legal witnessing across North MS. Technologist-owned with a zero-defect mindset.
             </p>
             <div className="space-y-2 text-sm">
-              <p><span className="text-[#c5a059] font-bold">Dispatch Center:</span> 601-300-0702</p>
-              <p><span className="text-[#c5a059] font-bold">Review Email:</span> notary@northmsnotary.com</p>
-              <p><span className="text-[#c5a059] font-bold">HQ Base:</span> Tillatoba, MS 38961</p>
+              <p><span className="text-[#c5a059] font-bold">Dispatch:</span> 601-300-0702</p>
+              <p><span className="text-[#c5a059] font-bold">Email:</span> notary@northmsnotary.com</p>
+              <p><span className="text-[#c5a059] font-bold">HQ:</span> Tillatoba, MS 38961</p>
             </div>
           </div>
           <div>
-            <h5 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Regional Hubs (25 Markets)</h5>
+            <h5 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Regional Hubs</h5>
             <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
               {HUBS.slice(0, 10).map(hub => (
                 <li key={hub.id}>
-                  <a href={`hub.html?id=${hub.id}`} className="hover:text-[#c5a059] transition text-xs">Notary {hub.name}</a>
+                  <Link to={`/hub?id=${hub.id}`} className="hover:text-[#c5a059] transition text-xs">Notary {hub.name}</Link>
                 </li>
               ))}
               <li className="col-span-2 mt-4">
-                <a href="area.html" className="text-[#c5a059] font-bold text-xs uppercase underline hover:text-white transition">Explore Full 25-Market Network</a>
+                <Link to="/area" className="text-[#c5a059] font-bold text-xs uppercase underline">Explore All 15 Hubs</Link>
               </li>
             </ul>
           </div>
           <div>
-            <h5 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Expertise & Compliance</h5>
+            <h5 className="text-white font-bold uppercase tracking-widest text-xs mb-6">Compliance & Tools</h5>
             <ul className="space-y-3 text-sm">
-              <li><a href="services.html" className="hover:text-[#c5a059] transition">Loan Closings</a></li>
-              <li><a href="services.html" className="hover:text-[#c5a059] transition">Hospital Notarization</a></li>
-              <li><a href="calculator.html" className="hover:text-[#c5a059] transition">Dispatch Calculator</a></li>
-              <li><a href="privacy.html" className="hover:text-[#c5a059] transition">GLBA Compliance</a></li>
+              <li><Link to="/calculator" className="hover:text-[#c5a059] transition">Fee Calculator</Link></li>
+              <li><Link to="/privacy" className="hover:text-[#c5a059] transition">Privacy Policy (GLBA)</Link></li>
+              <li><Link to="/faq" className="hover:text-[#c5a059] transition">Knowledge Center</Link></li>
+              <li><p className="text-[10px] leading-tight text-gray-600 mt-6 uppercase italic">High-stakes missions are subject to Professional Tier adjustment. I am not an attorney licensed to practice law.</p></li>
             </ul>
           </div>
         </div>
