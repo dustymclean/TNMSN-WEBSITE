@@ -1,18 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SectionHeader from '../components/SectionHeader';
 import { Icons } from '../constants';
 import { copyToClipboard, triggerSMS } from '../utils';
 
 const CalculatorPage: React.FC = () => {
-  const navigate = useNavigate();
   const [stamps, setStamps] = useState(1);
   const [pages, setPages] = useState(0);
   const [distance, setDistance] = useState(10);
   const [afterHours, setAfterHours] = useState(false);
   const [holiday, setHoliday] = useState(false);
   const [isProTier, setIsProTier] = useState(false);
-  const [showInstructions, setShowInstructions] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const pricing = useMemo(() => {
@@ -45,48 +42,49 @@ const CalculatorPage: React.FC = () => {
     };
   }, [stamps, pages, distance, afterHours, holiday, isProTier]);
 
-  const quoteText = `North MS Notary Estimate\n------------------\nTier: ${isProTier ? 'Specialized Pro' : 'Standard Residential'}\nRadius: ${distance} miles\nStamps: ${stamps}\nPrinting: ${pages} pages\nAfter Hours: ${afterHours ? 'Yes' : 'No'}\nHoliday: ${holiday ? 'Yes' : 'No'}\n------------------\nTotal Est: $${pricing.total.toFixed(2)}`;
+  const missionBrief = `NORTH MS NOTARY MISSION BRIEF\n==========================\nTIER: ${isProTier ? 'PROFESSIONAL (SLA)' : 'STANDARD'}\nRADIUS: ${distance} MI\nSTAMPS: ${stamps}\nPRINTING: ${pages} PGS\nPREMIUMS: ${afterHours || holiday ? 'YES' : 'NONE'}\n--------------------------\nESTIMATED TOTAL: $${pricing.total.toFixed(2)}`;
 
   const handleCopy = () => {
-    copyToClipboard(quoteText);
+    copyToClipboard(missionBrief);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleLockIn = () => {
-    const brief = encodeURIComponent(`Quote: $${pricing.total.toFixed(2)} (${isProTier ? 'Pro' : 'Standard'}, ${distance}mi radius, ${stamps} stamps)`);
-    navigate(`/contact?brief=${brief}`);
+    window.location.href = `./contact.html?brief=${encodeURIComponent(missionBrief)}`;
   };
 
   return (
     <div className="py-24 bg-slate-50 min-h-screen animate-in relative text-left">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="relative">
-          <SectionHeader title="Dynamic Fee Calculator" subtitle="Estimate your mobile logistics investment. Toggle between Residential or high-stakes Professional dispatch." />
-          <button onClick={() => setShowInstructions(!showInstructions)} className="absolute top-0 right-4 flex items-center gap-2 text-[#c5a059] font-bold uppercase tracking-widest text-[10px] hover:text-[#0a192f] transition">
-            <Icons.Info /> Instructions
-          </button>
-        </div>
+        <SectionHeader title="Dynamic Fee Calculator" subtitle="Estimate your mobile logistics investment. Toggle between Residential or high-stakes Professional dispatch." />
         
-        {showInstructions && (
-          <div className="mb-12 bg-white p-10 rounded-[2rem] border-2 border-[#c5a059] shadow-xl animate-in text-left">
-            <h3 className="font-serif text-2xl font-bold text-[#0a192f] mb-4 italic text-center">Calculator Guide</h3>
-            <div className="grid md:grid-cols-3 gap-8 text-sm text-gray-600 leading-relaxed">
-              <div>
-                <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2">1. Choose Your Tier</h4>
-                <p>Standard: Best for residential. Pro: For Loan closings, Clinical, or Corporate.</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2">2. Set Your Radius</h4>
-                <p>Estimate mileage from Tillatoba center to your signing location.</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2">3. Add Requirements</h4>
-                <p>Select premiums for off-hours or industrial on-site printing.</p>
-              </div>
+        <div className="mb-12 bg-white p-10 rounded-[2rem] border-2 border-[#c5a059] shadow-xl text-left">
+          <h3 className="font-serif text-2xl font-bold text-[#0a192f] mb-4 italic text-center uppercase tracking-tighter">Calculator Guide</h3>
+          <div className="grid md:grid-cols-3 gap-8 text-sm text-gray-600 leading-relaxed">
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-[#c5a059] text-[#0a192f] flex items-center justify-center text-[10px] font-black">1</span>
+                Choose Your Tier
+              </h4>
+              <p className="text-xs">Standard is best for residential. Pro is for Closings, Clinical, or Corporate Environments.</p>
+            </div>
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-[#c5a059] text-[#0a192f] flex items-center justify-center text-[10px] font-black">2</span>
+                Set Your Radius
+              </h4>
+              <p className="text-xs">Estimate the travel mileage from our Tillatoba HQ center to your specific destination.</p>
+            </div>
+            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <h4 className="font-bold text-[#0a192f] uppercase tracking-widest text-xs mb-2 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-[#c5a059] text-[#0a192f] flex items-center justify-center text-[10px] font-black">3</span>
+                Add Requirements
+              </h4>
+              <p className="text-xs">Select stamps, printing needs, or premiums for off-hours and holiday emergency dispatch.</p>
             </div>
           </div>
-        )}
+        </div>
 
         <div className="flex justify-center mb-12">
           <div className="bg-white p-2 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-2">
@@ -136,9 +134,9 @@ const CalculatorPage: React.FC = () => {
           <div className="bg-[#0a192f] text-white p-10 rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col h-full text-left">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[#c5a059]/10 -mr-16 -mt-16 rounded-full"></div>
             <div className="flex justify-between items-center mb-8">
-              <h3 className="text-xl font-serif font-bold text-[#c5a059] italic uppercase tracking-tighter">Estimate Total</h3>
+              <h3 className="text-xl font-serif font-bold text-[#c5a059] italic uppercase tracking-tighter">Mission Brief</h3>
               <button onClick={handleCopy} className="p-2 hover:bg-white/10 rounded-lg transition text-gray-400 flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest">
-                {copied ? 'Copied!' : <><Icons.Copy /> Copy</>}
+                {copied ? 'Copied!' : <><Icons.Copy /> Copy Summary</>}
               </button>
             </div>
             
@@ -151,12 +149,12 @@ const CalculatorPage: React.FC = () => {
 
             <div className="mt-auto space-y-4">
               <div className="flex justify-between items-end">
-                <span className="font-serif italic text-lg">Total</span>
+                <span className="font-serif italic text-lg">Total Est.</span>
                 <span className="text-5xl font-black text-[#c5a059] tracking-tighter">${pricing.total.toFixed(2)}</span>
               </div>
               <div className="flex flex-col gap-3 mt-8">
                 <button onClick={handleLockIn} className="w-full bg-[#c5a059] text-[#0a192f] py-5 rounded-xl font-black uppercase tracking-widest shadow-xl hover:scale-105 transition">Lock in Rate</button>
-                <button onClick={() => triggerSMS(quoteText)} className="w-full bg-transparent border-2 border-white/20 text-white py-5 rounded-xl font-black uppercase tracking-widest hover:border-[#c5a059] hover:text-[#c5a059] transition text-sm">Confirm Dispatch (SMS)</button>
+                <button onClick={() => triggerSMS(missionBrief)} className="w-full bg-transparent border-2 border-white/20 text-white py-5 rounded-xl font-black uppercase tracking-widest hover:border-[#c5a059] hover:text-[#c5a059] transition text-sm text-center">Confirm via SMS</button>
               </div>
             </div>
           </div>

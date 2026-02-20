@@ -3,23 +3,78 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The North MS Notary | Mobile Logistics</title>
+    <title>The North MS Notary | Mobile Bureau</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@100;300;400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
     <style>
-      body { font-family: 'Inter', sans-serif; }
-      .font-serif { font-family: 'Playfair Display', serif; }
-      .gold-accent-pattern {
-        background-image: linear-gradient(45deg, #c5a059 25%, transparent 25%, transparent 50%, #c5a059 50%, #c5a059 75%, transparent 75%, transparent);
-        background-size: 20px 20px;
+      :root {
+        --gold: #d4af37;
+        --gold-glow: rgba(212, 175, 55, 0.4);
+        --navy: #0a192f;
+        --navy-light: #112240;
       }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
+      body { 
+        font-family: 'Inter', sans-serif; 
+        background-color: var(--navy);
+        color: white;
+        overflow-x: hidden;
+      }
+      .font-serif { font-family: 'Playfair Display', serif; }
+      .font-cinzel { font-family: 'Cinzel', serif; }
+      
+      .gold-gradient {
+        background: linear-gradient(135deg, #fbf5e6 0%, #d4af37 50%, #8a6d3b 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      .glass-card {
+        background: rgba(17, 34, 64, 0.4);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      }
+      
+      .luxury-shadow {
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--gold-glow);
+      }
+
+      .grain-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        opacity: 0.03;
+        pointer-events: none;
+        z-index: 100;
+      }
+
+      @keyframes reveal {
+        from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
       }
-      .animate-in { animation: fadeIn 0.6s ease-out forwards; }
+      .animate-reveal { animation: reveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: var(--navy); }
+      ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+      
+      .ms-map-path {
+        fill: #0d1d31;
+        stroke: #d4af37;
+        stroke-width: 2;
+        transition: all 0.5s ease;
+      }
+      .hub-node {
+        fill: #d4af37;
+        filter: drop-shadow(0 0 5px #d4af37);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+      .hub-node:hover {
+        transform: scale(2);
+      }
     </style>
   <script type="importmap">
 {
@@ -29,12 +84,15 @@
     "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
     "react/": "https://esm.sh/react@^19.2.4/",
     "vite": "https://esm.sh/vite@^7.3.1",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3"
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3",
+    "path": "https://esm.sh/path@^0.12.7",
+    "url": "https://esm.sh/url@^0.11.4"
   }
 }
 </script>
 </head>
-  <body>
+  <body class="selection:bg-[#d4af37] selection:text-[#0a192f]">
+    <div class="grain-overlay"></div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
   </body>

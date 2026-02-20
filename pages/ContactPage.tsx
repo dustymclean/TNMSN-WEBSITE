@@ -4,15 +4,21 @@ import { Icons, HUBS } from '../constants';
 import { triggerSMS } from '../utils';
 
 const ContactPage: React.FC = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', city: 'Tillatoba', brief: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', city: 'Tillatoba (HQ)', message: '' });
   const [status, setStatus] = useState<'IDLE' | 'SENDING' | 'SUCCESS' | 'ERROR'>('IDLE');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const hub = params.get('hub');
     const brief = params.get('brief');
-    if (brief) {
-      setFormData(prev => ({ ...prev, brief: decodeURIComponent(brief) }));
+    const service = params.get('service');
+    if (hub) {
+      setFormData(prev => ({ ...prev, city: decodeURIComponent(hub), message: `Protocol inquiry for ${decodeURIComponent(hub)} District Hub.` }));
+    } else if (brief) {
+       setFormData(prev => ({ ...prev, message: decodeURIComponent(brief) }));
+    } else if (service) {
+       setFormData(prev => ({ ...prev, message: `Requesting elite dispatch for: ${decodeURIComponent(service)}` }));
     }
   }, []);
 
@@ -20,146 +26,163 @@ const ContactPage: React.FC = () => {
     e.preventDefault();
     setStatus('SENDING');
     
+    // Formspree Integration using fetch
     try {
       const response = await fetch('https://formspree.io/f/mqelgeag', {
         method: 'POST',
-        body: JSON.stringify(formData),
+        body: new FormData(e.target as HTMLFormElement),
         headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Accept': 'application/json'
         }
       });
 
       if (response.ok) {
         setStatus('SUCCESS');
-        setFormData({ name: '', email: '', city: 'Tillatoba', brief: '' });
+        setFormData({ name: '', email: '', city: 'Tillatoba (HQ)', message: '' });
       } else {
-        const data = await response.json();
-        if (data && Object.prototype.hasOwnProperty.call(data, 'errors')) {
-          setErrorMessage(data["errors"].map((error: any) => error["message"]).join(", "));
-        } else {
-          setErrorMessage("Oops! There was a problem submitting your form");
-        }
         setStatus('ERROR');
+        setErrorMessage("MISSION INTERRUPTED: ENCRYPTION HANDSHAKE FAILURE");
       }
     } catch (error) {
-      setErrorMessage("Oops! There was a problem submitting your form");
       setStatus('ERROR');
+      setErrorMessage("MISSION INTERRUPTED: CARRIER SIGNAL DISCONNECT");
     }
   };
 
   const handleSMSDispatch = () => {
-    const message = `Dispatch Request:\nName: ${formData.name}\nCity: ${formData.city}\nBrief: ${formData.brief}`;
-    triggerSMS(message);
+    const msg = `Dispatch Request:\nName: ${formData.name}\nDistrict: ${formData.city}\nBrief: ${formData.message}`;
+    triggerSMS(msg);
   };
 
   return (
-    <div className="py-24 bg-white min-h-screen px-4 animate-in text-left">
-      <div className="max-w-7xl mx-auto">
+    <div className="py-48 bg-[#0a192f] min-h-screen px-6 animate-reveal text-left relative overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-[#d4af37]/5 blur-[150px] rounded-full -mr-96 -mt-96 pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         {status === 'SUCCESS' ? (
-          <div className="max-w-2xl mx-auto text-center py-24 bg-slate-50 rounded-[3rem] border border-slate-100 animate-in">
-            <div className="w-24 h-24 bg-[#c5a059] text-[#0a192f] rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
+          <div className="max-w-3xl mx-auto text-center py-48 glass-card rounded-[5rem] border-[#d4af37]/30 luxury-shadow animate-reveal">
+            <div className="w-32 h-32 bg-[#d4af37] text-[#0a192f] rounded-[2.5rem] flex items-center justify-center mx-auto mb-12 shadow-2xl shadow-[#d4af37]/20 text-4xl">
               <Icons.Check />
             </div>
-            <h2 className="text-4xl font-serif font-bold text-[#0a192f] mb-4 text-center">Dispatch Initiated</h2>
-            <p className="text-gray-500 mb-8 max-w-sm mx-auto text-center">Thanks for your submission! Our mobile unit has received your request and will follow up shortly.</p>
-            <button onClick={() => setStatus('IDLE')} className="text-[#c5a059] font-bold uppercase tracking-widest text-xs border-b border-[#c5a059] pb-1">Submit Another Request</button>
+            <h2 className="text-6xl font-cinzel font-black text-white mb-6 uppercase tracking-tight">Transmission Received</h2>
+            <p className="text-gray-400 mb-12 max-w-sm mx-auto text-xl font-light leading-relaxed italic">Our Mobile Bureau has received your brief. A logistics officer will follow up via secure channel shortly.</p>
+            <button onClick={() => setStatus('IDLE')} className="text-[#d4af37] font-black uppercase tracking-[0.5em] text-[10px] border-b-2 border-[#d4af37]/20 pb-2 hover:border-[#d4af37] transition-all">New Deployment Inquiry</button>
           </div>
         ) : (
-          <div className="grid lg:grid-cols-2 gap-20 items-start">
-            <div>
-              <SectionHeader title="Initiate Secured Dispatch" subtitle="All requests are processed through our encrypted GLBA-compliant infrastructure." />
-              <div className="space-y-12">
-                <div className="flex gap-6 items-start">
-                  <div className="w-14 h-14 bg-[#0a192f] text-[#c5a059] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg"><Icons.Phone /></div>
+          <div className="grid lg:grid-cols-2 gap-32 items-start">
+            <div className="space-y-24">
+              <SectionHeader title="Dispatch Inquiry" subtitle="Initiate secured communication with our Mobile Logistics Bureau. All transmissions are subject to GLBA-compliant protocols." light />
+              
+              <div className="space-y-20">
+                <div className="flex gap-10 items-start group">
+                  <div className="w-24 h-24 bg-white/5 text-[#d4af37] rounded-[2.5rem] flex items-center justify-center flex-shrink-0 shadow-2xl border border-white/5 group-hover:scale-110 transition-transform duration-700"><Icons.Phone /></div>
                   <div>
-                    <h4 className="font-serif text-xl font-bold text-[#0a192f]">Urgent Dispatch Line</h4>
-                    <p className="text-2xl font-black text-[#c5a059] mb-1">601-300-0702</p>
-                    <p className="text-[10px] text-gray-400 uppercase tracking-widest">Immediate corporate response</p>
+                    <h4 className="font-cinzel text-2xl font-black text-white uppercase tracking-tight mb-3 italic">Direct Dispatch Line</h4>
+                    <p className="text-5xl font-black text-[#d4af37] tracking-tighter mb-3 font-serif italic">601-300-0702</p>
+                    <p className="text-[10px] text-gray-700 uppercase tracking-[0.6em] font-black">24/7 Corporate Mobilization Protocols</p>
                   </div>
                 </div>
 
-                <div className="bg-slate-50 p-8 rounded-[2rem] border border-slate-100">
-                  <h4 className="font-serif text-xl font-bold text-[#0a192f] mb-4 italic uppercase tracking-tighter">Document Review & Printing</h4>
-                  <p className="text-gray-600 font-light leading-relaxed mb-6 text-sm">
-                    <strong>Instructions:</strong> For high-stakes missions requiring industrial dual-tray printing or complex legal review, please email your packets or documents to the address below prior to dispatch.
+                <div className="glass-card p-12 rounded-[4rem] border-[#d4af37]/10 luxury-shadow hover:bg-white/[0.02] transition-colors">
+                  <h4 className="font-cinzel text-2xl font-black text-white mb-6 italic uppercase tracking-tight">Secure Packet Forwarding</h4>
+                  <p className="text-gray-500 font-light leading-relaxed mb-10 text-sm italic">
+                    For high-stakes missions requiring industrial on-site printing, dual-tray fabrication, or multi-document review, please forward your encrypted packets to:
                   </p>
-                  <div className="flex items-center gap-3 text-[#c5a059] font-black uppercase tracking-widest text-sm bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                  <div className="flex items-center gap-6 text-[#d4af37] font-black uppercase tracking-[0.4em] text-[11px] bg-white/5 p-8 rounded-[2.5rem] shadow-inner border border-white/5 group hover:border-[#d4af37]/40 transition-all">
                     <Icons.FileText />
-                    <a href="mailto:notary@northmsnotary.com" className="hover:underline">notary@northmsnotary.com</a>
+                    <a href="mailto:notary@northmsnotary.com" className="hover:text-white transition-colors">notary@northmsnotary.com</a>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4">
-                  <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Mobile Logistics Quick Action</h4>
-                  <button onClick={handleSMSDispatch} className="flex items-center justify-center gap-3 bg-[#c5a059] text-[#0a192f] py-5 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-105 transition shadow-xl w-full max-w-sm">
-                    <Icons.MessageSquare /> Immediate SMS Text
+                <div className="space-y-8">
+                  <h4 className="text-[11px] font-black text-gray-700 uppercase tracking-[0.6em] italic">Rapid Engagement Protocol</h4>
+                  <button onClick={handleSMSDispatch} className="flex items-center justify-center gap-6 bg-[#d4af37] text-[#0a192f] py-7 px-16 rounded-full font-black uppercase tracking-[0.4em] text-xs hover:scale-105 transition-all shadow-[0_25px_60px_rgba(212,175,55,0.2)]">
+                    <Icons.MessageSquare /> SECURED SMS DISPATCH
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="bg-[#0a192f] p-12 rounded-[3rem] shadow-2xl relative">
-              <div className="absolute inset-0 opacity-5 pointer-events-none gold-accent-pattern"></div>
-              <form onSubmit={handleFormSubmit} className="relative z-10 space-y-6">
-                <h3 className="text-white font-serif text-2xl font-bold italic mb-6">Dispatch Request Form</h3>
+            {/* Beautiful Glass Form */}
+            <div className="glass-card p-16 rounded-[5rem] shadow-[0_100px_200px_rgba(0,0,0,0.7)] relative border-[#d4af37]/20 border-t-[12px] luxury-shadow">
+              <div className="absolute inset-0 opacity-[0.05] pointer-events-none gold-accent-pattern"></div>
+              <form 
+                action="https://formspree.io/f/mqelgeag"
+                method="POST"
+                onSubmit={handleFormSubmit} 
+                className="relative z-10 space-y-12"
+              >
+                <div className="flex justify-between items-end mb-12">
+                   <h3 className="text-white font-cinzel text-4xl font-black italic uppercase tracking-tight">Deployment Brief</h3>
+                   <div className="flex gap-2">
+                      <div className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse"></div>
+                      <div className="w-2 h-2 rounded-full bg-white/10"></div>
+                      <div className="w-2 h-2 rounded-full bg-white/10"></div>
+                   </div>
+                </div>
                 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Full Name</label>
+                <div className="space-y-10">
+                  <div className="group/field">
+                    <label className="block text-[10px] font-black text-gray-600 uppercase tracking-[0.5em] mb-4 group-focus-within/field:text-[#d4af37] transition-colors">IDENTITY / FULL NAME</label>
                     <input 
                       required 
                       type="text"
                       name="name"
                       value={formData.name} 
                       onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-white outline-none focus:border-[#c5a059] transition" 
-                      placeholder="Enter your name"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 px-8 text-white outline-none focus:border-[#d4af37]/60 transition-all font-bold text-sm shadow-inner group-hover/field:border-white/20" 
+                      placeholder="FULL LEGAL NAME"
                     />
                   </div>
                   
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Email Address</label>
+                  <div className="group/field">
+                    <label className="block text-[10px] font-black text-gray-600 uppercase tracking-[0.5em] mb-4 group-focus-within/field:text-[#d4af37] transition-colors">SECURED EMAIL</label>
                     <input 
                       required 
                       type="email"
                       name="email"
                       value={formData.email} 
                       onChange={(e) => setFormData({...formData, email: e.target.value})} 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-white outline-none focus:border-[#c5a059] transition" 
-                      placeholder="your@email.com"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 px-8 text-white outline-none focus:border-[#d4af37]/60 transition-all font-bold text-sm shadow-inner group-hover/field:border-white/20" 
+                      placeholder="MISSION@SECURE.COM"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Service City</label>
-                    <select 
-                      name="city"
-                      value={formData.city} 
-                      onChange={(e) => setFormData({...formData, city: e.target.value})} 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-white outline-none focus:border-[#c5a059] appearance-none cursor-pointer"
-                    >
-                      {HUBS.map(h => <option key={h.id} value={h.name} className="bg-[#0a192f]">{h.name}</option>)}
-                      <option value="Other Regional" className="bg-[#0a192f]">Other Regional</option>
-                    </select>
+                  <div className="group/field">
+                    <label className="block text-[10px] font-black text-gray-600 uppercase tracking-[0.5em] mb-4 group-focus-within/field:text-[#d4af37] transition-colors">TARGET DISTRICT HUB</label>
+                    <div className="relative">
+                      <select 
+                        name="city"
+                        value={formData.city} 
+                        onChange={(e) => setFormData({...formData, city: e.target.value})} 
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl py-6 px-8 text-white outline-none focus:border-[#d4af37]/60 appearance-none cursor-pointer font-bold text-sm shadow-inner"
+                      >
+                        {HUBS.map(h => <option key={h.id} value={h.name} className="bg-[#0a192f]">{h.name}</option>)}
+                        <option value="Other Regional" className="bg-[#0a192f]">OUTSIDE NETWORK DISPATCH</option>
+                      </select>
+                      <div className="absolute right-8 top-1/2 -translate-y-1/2 pointer-events-none text-[#d4af37] font-bold">
+                        &darr;
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Mission Brief / Message</label>
+                  <div className="group/field">
+                    <label className="block text-[10px] font-black text-gray-600 uppercase tracking-[0.5em] mb-4 group-focus-within/field:text-[#d4af37] transition-colors">ENGAGEMENT INTEL / MISSION BRIEF</label>
                     <textarea 
                       required
                       name="message"
-                      value={formData.brief} 
-                      onChange={(e) => setFormData({...formData, brief: e.target.value})} 
-                      rows={4} 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-white outline-none focus:border-[#c5a059] transition" 
-                      placeholder="Describe the signing requirements, number of signers, etc."
+                      value={formData.message} 
+                      onChange={(e) => setFormData({...formData, message: e.target.value})} 
+                      rows={5} 
+                      className="w-full bg-white/5 border border-white/10 rounded-[2.5rem] py-6 px-8 text-white outline-none focus:border-[#d4af37]/60 transition-all font-bold text-sm resize-none shadow-inner group-hover/field:border-white/20" 
+                      placeholder="DESCRIBE THE LOGISTICAL ENGAGEMENT PROTOCOLS..."
                     ></textarea>
                   </div>
                 </div>
 
                 {status === 'ERROR' && (
-                  <p className="text-red-400 text-xs font-bold uppercase tracking-widest bg-red-400/10 p-4 rounded-xl border border-red-400/20">
+                  <p className="text-[#d4af37] text-[11px] font-black uppercase tracking-[0.4em] bg-[#d4af37]/10 p-8 rounded-[2rem] border border-[#d4af37]/20 animate-pulse text-center">
                     {errorMessage}
                   </p>
                 )}
@@ -167,13 +190,15 @@ const ContactPage: React.FC = () => {
                 <button 
                   type="submit" 
                   disabled={status === 'SENDING'}
-                  className={`w-full bg-[#c5a059] text-[#0a192f] py-5 rounded-xl font-black uppercase tracking-widest text-lg transition shadow-2xl ${status === 'SENDING' ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white'}`}
+                  className={`w-full bg-[#d4af37] text-[#0a192f] py-7 rounded-full font-black uppercase tracking-[0.5em] text-xs transition-all shadow-2xl ${status === 'SENDING' ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white hover:scale-105'}`}
                 >
-                  {status === 'SENDING' ? 'Processing...' : 'Request Dispatch'}
+                  {status === 'SENDING' ? 'MOBILIZING BUREAU...' : 'TRANSMIT BRIEF'}
                 </button>
-                <p className="text-center text-[10px] text-gray-500 uppercase tracking-widest italic">
-                  Powered by Formspree Secure Infrastructure
-                </p>
+                <div className="flex items-center justify-center gap-6 py-4 opacity-30">
+                  <div className="h-[1px] flex-grow bg-gradient-to-l from-white to-transparent"></div>
+                  <span className="text-[9px] font-black uppercase tracking-[0.8em]">Encrypted Channel</span>
+                  <div className="h-[1px] flex-grow bg-gradient-to-r from-white to-transparent"></div>
+                </div>
               </form>
             </div>
           </div>
